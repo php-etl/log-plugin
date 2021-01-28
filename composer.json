@@ -1,0 +1,50 @@
+{
+    "name": "php-etl/log-plugin",
+    "description": "Plugins for adding Logging support",
+    "type": "library",
+    "license": "MIT",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Kiboko\\Plugin\\Log\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "functional\\Kiboko\\Plugin\\Log\\": "tests/functional/"
+        }
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "require": {
+        "php": "8.0",
+        "ext-json": "*",
+        "php-etl/configurator-contracts": "dev-master",
+        "nikic/php-parser": "^4.9@dev",
+        "symfony/config": "^4.0 || ^5.0"
+    },
+    "require-dev": {
+        "php-http/mock-client": "^1.4@dev",
+        "symfony/yaml": "5.x-dev",
+        "symfony/console": "5.x-dev",
+        "php-etl/bucket-contracts": "^0.1.0@dev",
+        "akeneo/api-php-client-ee": "^4.0",
+        "php-etl/pipeline": "^0.2.0@dev",
+        "phpunit/phpunit": "^9.0",
+        "laminas/laminas-diactoros": "2.6.x-dev",
+        "adlawson/vfs": "dev-develop",
+        "phpstan/phpstan": "0.12.x-dev"
+    },
+    "authors": [
+        {
+            "name": "Grégory Planchat",
+            "email": "gregory@kiboko.fr"
+        }
+    ],
+    "minimum-stability": "dev"
+}
