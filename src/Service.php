@@ -38,12 +38,14 @@ final class Service implements Configurator\FactoryInterface
     public function validate(array $config): bool
     {
         try {
-            $this->normalize($config);
+            if ($this->normalize($config)) {
+                return true;
+            }
 
-            return true;
-        } catch (Symfony\InvalidTypeException|Symfony\InvalidConfigurationException) {
-            return false;
+        } catch (\Exception) {
         }
+
+        return false;
     }
 
     public function compile(array $config): Repository
