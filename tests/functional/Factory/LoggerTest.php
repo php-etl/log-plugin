@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace functional\Kiboko\Plugin\Log;
+namespace functional\Factory;
 
 use Kiboko\Plugin\Log;
 use PHPUnit\Framework\TestCase;
 
-final class ServiceTest extends TestCase
+final class LoggerTest extends TestCase
 {
     public function configProvider()
     {
@@ -13,6 +13,7 @@ final class ServiceTest extends TestCase
             'expected' => [
                 'type' => 'stderr'
             ],
+            'expected_class' => 'Kiboko\\Plugin\\Log\\Builder\\Logger',
             'actual' => [
                 'logger' => [
                     'type' => 'stderr'
@@ -24,6 +25,7 @@ final class ServiceTest extends TestCase
             'expected' => [
                 'type' => 'null'
             ],
+            'expected_class' => 'Kiboko\\Plugin\\Log\\Builder\\Logger',
             'actual' => [
                 'logger' => [
                     'type' => 'null'
@@ -35,7 +37,7 @@ final class ServiceTest extends TestCase
     /**
      * @dataProvider configProvider
      */
-    public function testWithConfiguration(array $expected, array $actual): void
+    public function testWithConfiguration(array $expected, string $expectedClass, array $actual): void
     {
         $factory = new Log\Service();
         $normalizedConfig = $factory->normalize($actual);
@@ -55,8 +57,16 @@ final class ServiceTest extends TestCase
         );
 
         $this->assertInstanceOf(
-            'Kiboko\\Plugin\\Log\\Repository',
-            $factory->compile($normalizedConfig)
+            $expectedClass,
+            $factory->compile($normalizedConfig)->getBuilder()
         );
+    }
+
+    public function testFailToValidate(): void
+    {
+        $factory = new Log\Service();
+        $this->assertFalse($factory->validate([
+            'type' => 'unexpected'
+        ]));
     }
 }

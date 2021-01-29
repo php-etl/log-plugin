@@ -38,10 +38,9 @@ final class Service implements Configurator\FactoryInterface
     public function validate(array $config): bool
     {
         try {
-            if ($this->normalize($config)) {
-                return true;
-            }
+            $this->processor->processConfiguration($this->configuration, $config);
 
+            return true;
         } catch (\Exception) {
         }
 

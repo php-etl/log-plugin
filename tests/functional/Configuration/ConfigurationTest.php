@@ -1,0 +1,54 @@
+<?php declare(strict_types=1);
+
+namespace functional\Kiboko\Plugin\Log\Configuration;
+
+use Kiboko\Plugin\Log\Configuration;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Config;
+
+class ConfigurationTest extends TestCase
+{
+    private ?Config\Definition\Processor $processor = null;
+
+    protected function setUp(): void
+    {
+        $this->processor = new Config\Definition\Processor();
+    }
+
+    public function validConfigProvider()
+    {
+        yield [
+            'expected' => [
+            ],
+            'actual' => [
+            ]
+        ];
+
+        yield [
+            'expected' => [
+                'type' => 'null',
+            ],
+            'actual' => [
+                'type' => 'null',
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider validConfigProvider
+     */
+    public function testValidConfig($expected, $actual)
+    {
+        $config = new Configuration();
+
+        $this->assertEquals(
+            $expected,
+            $this->processor->processConfiguration(
+                $config,
+                [
+                    $actual
+                ]
+            )
+        );
+    }
+}
