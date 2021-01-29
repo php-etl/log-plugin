@@ -3,11 +3,13 @@
     "description": "Plugins for adding Logging support",
     "type": "library",
     "license": "MIT",
-    "extra": {
-        "branch-alias": {
-            "dev-master": "0.1.x-dev"
+    "authors": [
+        {
+            "name": "Grégory Planchat",
+            "email": "gregory@kiboko.fr"
         }
-    },
+    ],
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "Kiboko\\Plugin\\Log\\": "src/"
@@ -21,8 +23,13 @@
     "config": {
         "bin-dir": "bin"
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
+    },
     "require": {
-        "php": "8.0",
+        "php": "^8.0",
         "ext-json": "*",
         "php-etl/configurator-contracts": "dev-master",
         "nikic/php-parser": "^4.9@dev",
@@ -39,12 +46,5 @@
         "laminas/laminas-diactoros": "2.6.x-dev",
         "adlawson/vfs": "dev-develop",
         "phpstan/phpstan": "0.12.x-dev"
-    },
-    "authors": [
-        {
-            "name": "Grégory Planchat",
-            "email": "gregory@kiboko.fr"
-        }
-    ],
-    "minimum-stability": "dev"
+    }
 }
