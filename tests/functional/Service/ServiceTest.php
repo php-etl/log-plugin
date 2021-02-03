@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace functional\Kiboko\Plugin\Log;
+namespace functional\Kiboko\Plugin\Log\Service;
 
+use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Plugin\Log;
 use PHPUnit\Framework\TestCase;
 
@@ -13,17 +14,19 @@ final class ServiceTest extends TestCase
             'expected' => [
                 'type' => 'stderr'
             ],
+            'expected_class' => 'Kiboko\\Plugin\\Log\\Builder\\Logger',
             'actual' => [
                 'logger' => [
                     'type' => 'stderr'
-                ]
-            ]
+                ],
+            ],
         ];
 
         yield [
             'expected' => [
                 'type' => 'null'
             ],
+            'expected_class' => 'Kiboko\\Plugin\\Log\\Builder\\Logger',
             'actual' => [
                 'logger' => [
                     'type' => 'null'
@@ -35,14 +38,14 @@ final class ServiceTest extends TestCase
     /**
      * @dataProvider configProvider
      */
-    public function testWithConfiguration(array $expected, array $actual): void
+    public function testWithConfigurationAndProcessor(array $expected, string $expectedClass, array $actual): void
     {
-        $factory = new Log\Service();
-        $normalizedConfig = $factory->normalize($actual);
+        $service = new Log\Service();
+        $normalizedConfig = $service->normalize($actual);
 
         $this->assertEquals(
             new Log\Configuration(),
-            $factory->configuration()
+            $service->configuration()
         );
 
         $this->assertEquals(
@@ -50,13 +53,11 @@ final class ServiceTest extends TestCase
             $normalizedConfig
         );
 
-        $this->assertTrue(
-            $factory->validate($actual)
-        );
+        $this->assertTrue($service->validate($actual));
 
         $this->assertInstanceOf(
-            'Kiboko\\Plugin\\Log\\Repository',
-            $factory->compile($normalizedConfig)
+            $expectedClass,
+            $service->compile($normalizedConfig)->getBuilder()
         );
     }
 }
