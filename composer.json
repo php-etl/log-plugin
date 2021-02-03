@@ -30,7 +30,6 @@
     },
     "require": {
         "php": "^8.0",
-        "ext-json": "*",
         "php-etl/configurator-contracts": "0.1.x-dev",
         "nikic/php-parser": "^4.9@dev",
         "symfony/config": "^4.0 || ^5.0"

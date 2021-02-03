@@ -41,7 +41,6 @@ final class Service implements Configurator\FactoryInterface
             if ($this->normalize($config)) {
                 return true;
             }
-
         } catch (\Exception) {
         }
 
