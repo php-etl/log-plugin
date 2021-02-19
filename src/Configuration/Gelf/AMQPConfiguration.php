@@ -14,7 +14,6 @@ final class AMQPConfiguration implements ConfigurationInterface
         $builder->getRootNode()
             ->children()
                 ->scalarNode('queue')->end()
-                ->scalarNode('channel')->end()
                 ->scalarNode('host')
                     ->info('The host to connect to. Note: Max 1024 characters.')
                 ->end()

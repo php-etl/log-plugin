@@ -14,7 +14,6 @@ final class StreamConfiguration implements ConfigurationInterface
 
         $builder->getRootNode()
             ->children()
-                ->scalarNode('channel')->end()
                 ->scalarNode('path')->end()
                 ->booleanNode('use_locking')
                     ->info('Try to lock log file before doing any writes')

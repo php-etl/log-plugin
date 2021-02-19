@@ -14,7 +14,6 @@ final class SyslogConfiguration implements ConfigurationInterface
 
         $builder->getRootNode()
             ->children()
-                ->scalarNode('channel')->end()
                 ->scalarNode('ident')->end()
                 ->integerNode('facility')
                     ->info('Either one of the names of the keys in $this->facilities, or a LOG_* facility constant')

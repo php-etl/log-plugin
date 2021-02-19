@@ -2,20 +2,21 @@
 
 namespace Kiboko\Plugin\Log\Builder\Monolog;
 
-use PhpParser\Builder;
 use PhpParser\Node;
 
-final class SyslogBuilder implements Builder
+final class SyslogBuilder implements MonologBuilderInterface
 {
     private ?string $level;
     private ?int $facility;
     private ?int $logopts;
+    private iterable $formatters;
 
     public function __construct(private string $ident)
     {
         $this->level = null;
         $this->facility = null;
         $this->logopts = null;
+        $this->formatters = [];
     }
 
     public function withLevel(string $level): self
@@ -35,6 +36,13 @@ final class SyslogBuilder implements Builder
     public function withLogopts(int $logopts): self
     {
         $this->logopts = $logopts;
+
+        return $this;
+    }
+
+    public function withFormatters(Node\Expr ...$formatters): self
+    {
+        array_push($this->formatters, ...$formatters);
 
         return $this;
     }
@@ -69,9 +77,21 @@ final class SyslogBuilder implements Builder
             );
         }
 
-        return new Node\Expr\New_(
+        $instance = new Node\Expr\New_(
             class: new Node\Name\FullyQualified('Monolog\\Handler\\SyslogHandler'),
             args: $arguments,
         );
+
+        foreach ($this->formatters as $formatter) {
+            $instance = new Node\Expr\MethodCall(
+                var: $instance,
+                name: new Node\Identifier('setFormatter'),
+                args: [
+                    new Node\Arg($formatter),
+                ],
+            );
+        }
+
+        return $instance;
     }
 }

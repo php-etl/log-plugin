@@ -14,7 +14,6 @@ final class ElasticSearchConfiguration implements ConfigurationInterface
 
         $builder->getRootNode()
             ->children()
-                ->scalarNode('channel')->end()
                 ->enumNode('level')
                     ->info('The minimum logging level at which this handler will be triggered')
                     ->values([

@@ -3,6 +3,7 @@
 namespace Kiboko\Plugin\Log;
 
 use Kiboko\Contract\Configurator;
+use Kiboko\Plugin\Log\Builder\LogstashFormatterBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception as Symfony;
 use Symfony\Component\Config\Definition\Processor;
@@ -53,7 +54,11 @@ final class Service implements Configurator\FactoryInterface
         $repository = new Repository($builder);
 
         try {
-            if (array_key_exists('stderr', $config)
+            if (array_key_exists('inherit', $config)) {
+                $builder->withLogger((new Builder\InheritBuilder())->getNode());
+
+                return $repository;
+            } else if (array_key_exists('stderr', $config)
                 || (array_key_exists('type', $config) && $config['type'] === 'stderr')
             ) {
                 $builder->withLogger((new Builder\StderrLogger())->getNode());
@@ -69,98 +74,72 @@ final class Service implements Configurator\FactoryInterface
                 return $repository;
             }
 
+            if (!array_key_exists('destinations', $config)) {
+                return $repository;
+            }
+
+            $monologBuilder = new Builder\MonologLogger($config['channel']);
+
             $repository->addPackages('psr/log', 'monolog/monolog');
 
-            if (array_key_exists('stream', $config)) {
-                $monologBuilder = new Builder\MonologLogger($config['stream']['channel']);
+            foreach ($config['destinations'] as $destination) {
+                if (array_key_exists('stream', $destination)) {
+                    $factory = new Factory\StreamFactory();
 
-                $handlerBuilder = new Builder\Monolog\StreamBuilder($config['stream']['path']);
+                    $streamRepository = $factory->compile($destination['stream']);
 
-                if (array_key_exists('level', $config['stream'])) {
-                    $handlerBuilder->withLevel($config['stream']['level']);
+                    $repository->merge($streamRepository);
+                    $monologBuilder->withHandlers($streamRepository->getBuilder()->getNode());
                 }
 
-                if (array_key_exists('file_permissions', $config['stream'])) {
-                    $handlerBuilder->withFilePermissions($config['stream']['file_permissions']);
+                if (array_key_exists('syslog', $destination)) {
+                    $factory = new Factory\SyslogFactory();
+
+                    $syslogRepository = $factory->compile($destination['syslog']);
+
+                    $repository->merge($syslogRepository);
+                    $monologBuilder->withHandlers($syslogRepository->getBuilder()->getNode());
                 }
 
-                if (array_key_exists('use_locking', $config['stream'])) {
-                    $handlerBuilder->withLocking($config['stream']['use_locking']);
+                if (array_key_exists('logstash', $destination)) {
+                    $factory = new Factory\GelfFactory();
+
+                    $gelfRepository = $factory->compile($destination['logstash']);
+
+                    $gelfRepository->getBuilder()->withFormatters(
+                        (new LogstashFormatterBuilder($destination['logstash']['application_name']))->getNode()
+                    );
+
+                    $repository->merge($gelfRepository);
+                    $monologBuilder->withHandlers($gelfRepository->getBuilder()->getNode());
+
+                    $repository->addPackages('graylog2/gelf-php:0.1.*');
                 }
 
-                $monologBuilder->withHandlers($handlerBuilder->getNode());
+                if (array_key_exists('gelf', $destination)) {
+                    $factory = new Factory\GelfFactory();
 
-                $builder->withLogger($monologBuilder->getNode());
+                    $gelfRepository = $factory->compile($destination['gelf']);
+
+                    $repository->merge($gelfRepository);
+                    $monologBuilder->withHandlers($gelfRepository->getBuilder()->getNode());
+
+                    $repository->addPackages('graylog2/gelf-php:1.7.*');
+                }
+
+                if (array_key_exists('elasticsearch', $destination)) {
+                    $factory = new Factory\ElasticSearchFactory();
+
+                    $gelfRepository = $factory->compile($destination['elasticsearch']);
+
+                    $repository->merge($gelfRepository);
+                    $monologBuilder->withHandlers($gelfRepository->getBuilder()->getNode());
+
+                    $repository->addPackages('elasticsearch/elasticsearch:~7.0');
+                }
             }
 
-            if (array_key_exists('syslog', $config)) {
-                $monologBuilder = new Builder\MonologLogger($config['syslog']['channel']);
-
-                $handlerBuilder = new Builder\Monolog\SyslogBuilder($config['syslog']['ident']);
-
-                if (array_key_exists('level', $config['syslog'])) {
-                    $handlerBuilder->withLevel($config['syslog']['level']);
-                }
-
-                if (array_key_exists('facility', $config['syslog'])) {
-                    $handlerBuilder->withFacility($config['syslog']['facility']);
-                }
-
-                if (array_key_exists('logopts', $config['syslog'])) {
-                    $handlerBuilder->withLogopts($config['syslog']['logopts']);
-                }
-
-                $monologBuilder->withHandlers($handlerBuilder->getNode());
-
-                $builder->withLogger($monologBuilder->getNode());
-            }
-
-            if (array_key_exists('logstash', $config)) {
-                $monologBuilder = new Builder\MonologLogger($config['logstash']['channel']);
-
-                $handlerBuilder = new Builder\Monolog\LogstashBuilder();
-
-                if (array_key_exists('level', $config['logstash'])) {
-                    $handlerBuilder->withLevel($config['logstash']['level']);
-                }
-
-                $monologBuilder->withHandlers($handlerBuilder->getNode());
-
-                $builder->withLogger($monologBuilder->getNode());
-            }
-//            if (array_key_exists('gelf', $config)) {
-////                $builder->withLogger(
-////                    (new Builder\MonologLogger($config['stream']['channel']))
-////                        ->withHandlers(
-////                            new Node\Expr\New_(
-////                                class: new Node\Name\FullyQualified('Monolog\\Handler\\StreamHandler'),
-////                                args: [
-////                                    new Node\Arg(
-////                                        new Node\Scalar\String_($config['stream']['path'])
-////                                    )
-////                                ]
-////                            )
-////                        )
-////                        ->getNode()
-////                );
-////                $repository->addPackages('psr/log', 'monolog/monolog');
-//            } else if (array_key_exists('elasticsearch', $config)) {
-////                $builder->withLogger(
-////                    (new Builder\MonologLogger($config['stream']['channel']))
-////                        ->withHandlers(
-////                            new Node\Expr\New_(
-////                                class: new Node\Name\FullyQualified('Monolog\\Handler\\StreamHandler'),
-////                                args: [
-////                                    new Node\Arg(
-////                                        new Node\Scalar\String_($config['stream']['path'])
-////                                    )
-////                                ]
-////                            )
-////                        )
-////                        ->getNode()
-////                );
-////                $repository->addPackages('psr/log', 'monolog/monolog');
-//            }
+            $builder->withLogger($monologBuilder->getNode());
 
             return $repository;
         } catch (Symfony\InvalidTypeException|Symfony\InvalidConfigurationException $exception) {

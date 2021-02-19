@@ -15,7 +15,7 @@ final class LogstashConfiguration implements ConfigurationInterface
 
         $builder->getRootNode()
             ->children()
-                ->scalarNode('channel')->end()
+                ->scalarNode('application_name')->isRequired()->end()
                 ->enumNode('level')
                     ->info('The minimum logging level at which this handler will be triggered')
                     ->values([

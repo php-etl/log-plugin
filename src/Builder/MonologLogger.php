@@ -8,10 +8,12 @@ use PhpParser\Node;
 final class MonologLogger implements Builder
 {
     private iterable $handlers;
+    private iterable $processors;
 
     public function __construct(private string $channel)
     {
         $this->handlers = [];
+        $this->processors = [];
     }
 
     public function withHandlers(Node\Expr ...$handlers): self
@@ -21,10 +23,22 @@ final class MonologLogger implements Builder
         return $this;
     }
 
+    public function withProcessors(Node\Expr ...$processors): self
+    {
+        array_push($this->processors, ...$processors);
+
+        return $this;
+    }
+
     public function getNode(): Node\Expr
     {
         $instance = new Node\Expr\New_(
             class: new Node\Name\FullyQualified('Monolog\\Logger'),
+            args: [
+                new Node\Arg(
+                    new Node\Scalar\String_($this->channel)
+                )
+            ]
         );
 
         $instance = new Node\Expr\MethodCall(
@@ -33,7 +47,10 @@ final class MonologLogger implements Builder
             args: [
                 new Node\Arg(
                     new Node\Expr\Array_(
-                        array_map(fn (Node $handler) => new Node\Expr\ArrayItem(value: $handler), $this->handlers),
+                        items: array_map(fn (Node $handler) => new Node\Expr\ArrayItem(value: $handler), $this->handlers),
+                        attributes: [
+                            'kind' => Node\Expr\Array_::KIND_SHORT
+                        ]
                     ),
                 ),
             ],
@@ -62,6 +79,16 @@ final class MonologLogger implements Builder
                 ),
             ],
         );
+
+        foreach ($this->processors as $processor) {
+            $instance = new Node\Expr\MethodCall(
+                var: $instance,
+                name: new Node\Identifier('pushProcessor'),
+                args: [
+                    new Node\Arg($processor),
+                ],
+            );
+        }
 
         return $instance;
     }

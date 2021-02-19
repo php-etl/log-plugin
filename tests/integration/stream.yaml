@@ -1,7 +1,8 @@
 logger:
-  stream:
-    channel: pipeline
-    path: 'php://stderr'
-    use_locking: true
-    file_permissions: 0644
-    level: warning
+  channel: pipeline
+  destinations:
+  - stream:
+      path: 'php://stderr'
+      use_locking: true
+      file_permissions: 0644
+      level: warning
