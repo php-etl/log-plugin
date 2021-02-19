@@ -1,0 +1,10 @@
+logger:
+  logstash:
+    channel: pipeline
+    level: warning
+    amqp:
+      queue: foo
+      channel: bar
+      host: amqp.example.com
+      port: 4000
+
