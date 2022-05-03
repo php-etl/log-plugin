@@ -74,7 +74,10 @@ final class Service implements Configurator\FactoryInterface
                 return $repository;
             }
 
-            if (!array_key_exists('destinations', $config)) {
+            if (!array_key_exists('destinations', $config)
+                || !array_key_exists('channel', $config)
+                || count($config['destinations']) <= 0
+            ) {
                 return $repository;
             }
 
