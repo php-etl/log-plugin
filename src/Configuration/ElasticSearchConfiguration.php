@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kiboko\Plugin\Log\Configuration;
 
@@ -8,10 +10,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class ElasticSearchConfiguration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $builder = new TreeBuilder('elasticsearch');
 
+        /* @phpstan-ignore-next-line */
         $builder->getRootNode()
             ->children()
                 ->enumNode('level')
@@ -49,7 +52,8 @@ final class ElasticSearchConfiguration implements ConfigurationInterface
 //                        ->end()
 //                    ->end()
 //                ->end()
-            ->end();
+            ->end()
+        ;
 
         return $builder;
     }

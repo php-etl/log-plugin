@@ -29,14 +29,14 @@
         }
     },
     "require": {
-        "php": "^8.0",
-        "php-etl/configurator-contracts": "0.1.x-dev",
+        "php": "^8.1",
+        "php-etl/configurator-contracts": "^0.4.0",
         "nikic/php-parser": "^4.9@dev",
         "symfony/config": "^4.0 || ^5.0"
     },
     "require-dev": {
-        "symfony/yaml": "5.x-dev",
-        "symfony/console": "5.x-dev",
+        "symfony/yaml": "^5.2",
+        "symfony/console": "^5.2",
         "phpunit/phpunit": "^9.0",
         "adlawson/vfs": "dev-develop",
         "monolog/monolog": "2.x-dev",

@@ -1,18 +1,20 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kiboko\Plugin\Log\Configuration;
 
-use Kiboko\Plugin\Log\Configuration\Gelf;
 use Psr\Log\LogLevel;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class LogstashConfiguration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $builder = new TreeBuilder('logstash');
 
+        /* @phpstan-ignore-next-line */
         $builder->getRootNode()
             ->children()
                 ->scalarNode('application_name')->isRequired()->end()
@@ -31,7 +33,8 @@ final class LogstashConfiguration implements ConfigurationInterface
                 ->end()
                 ->append((new Gelf\AMQPConfiguration())->getConfigTreeBuilder()->getRootNode())
                 ->append((new Gelf\TCPConfiguration())->getConfigTreeBuilder()->getRootNode())
-            ->end();
+            ->end()
+        ;
 
         return $builder;
     }

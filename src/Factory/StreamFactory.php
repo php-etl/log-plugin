@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kiboko\Plugin\Log\Factory;
 
@@ -53,15 +55,15 @@ final class StreamFactory implements Configurator\FactoryInterface
     {
         $builder = new Builder\Monolog\StreamBuilder($config['path']);
 
-        if (array_key_exists('level', $config)) {
+        if (\array_key_exists('level', $config)) {
             $builder->withLevel($config['level']);
         }
 
-        if (array_key_exists('file_permissions', $config)) {
+        if (\array_key_exists('file_permissions', $config)) {
             $builder->withFilePermissions($config['file_permissions']);
         }
 
-        if (array_key_exists('use_locking', $config)) {
+        if (\array_key_exists('use_locking', $config)) {
             $builder->withLocking($config['use_locking']);
         }
 

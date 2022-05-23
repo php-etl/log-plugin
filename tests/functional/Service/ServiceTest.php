@@ -8,30 +8,58 @@ use PHPUnit\Framework\TestCase;
 
 final class ServiceTest extends TestCase
 {
-    public function configProvider()
+    public function configProvider(): \Generator
     {
         yield [
             'expected' => [
-                'type' => 'stderr'
+                'destinations' => [
+                    [
+                        'stream' => [
+                            'path' => 'path/to/dev.log'
+                        ],
+                    ]
+                ]
             ],
             'expected_class' => 'Kiboko\\Plugin\\Log\\Builder\\Logger',
             'actual' => [
-                'logger' => [
-                    'type' => 'stderr'
-                ],
+                [
+                    'destinations' => [
+                        [
+                            'stream' => [
+                                'path' => 'path/to/dev.log',
+                            ]
+                        ]
+                    ],
+                ]
             ],
         ];
 
         yield [
             'expected' => [
-                'type' => 'null'
+                'destinations' => [
+                   [
+                       'elasticsearch' => [
+                           'hosts' => [
+                               'http://user:password@localhost:9200'
+                           ],
+                       ],
+                   ],
+                ],
             ],
             'expected_class' => 'Kiboko\\Plugin\\Log\\Builder\\Logger',
             'actual' => [
-                'logger' => [
-                    'type' => 'null'
-                ]
-            ]
+                [
+                    'destinations' => [
+                        [
+                            'elasticsearch' => [
+                                'hosts' => [
+                                    'http://user:password@localhost:9200'
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
