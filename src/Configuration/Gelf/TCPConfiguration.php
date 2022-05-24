@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kiboko\Plugin\Log\Configuration\Gelf;
 
@@ -7,10 +9,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class TCPConfiguration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $builder = new TreeBuilder('tcp');
 
+        /* @phpstan-ignore-next-line */
         $builder->getRootNode()
             ->children()
                 ->scalarNode('host')
@@ -19,7 +22,8 @@ final class TCPConfiguration implements ConfigurationInterface
                 ->scalarNode('port')
                     ->info('Port on the host.')
                 ->end()
-            ->end();
+            ->end()
+        ;
 
         return $builder;
     }

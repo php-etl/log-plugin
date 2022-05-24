@@ -15,21 +15,14 @@ class ConfigurationTest extends TestCase
         $this->processor = new Config\Definition\Processor();
     }
 
-    public function validConfigProvider()
+    public function validConfigProvider(): \Generator
     {
         yield [
             'expected' => [
+                'destinations' => []
             ],
             'actual' => [
-            ]
-        ];
-
-        yield [
-            'expected' => [
-                'type' => 'null',
-            ],
-            'actual' => [
-                'type' => 'null',
+                'destinations' => []
             ]
         ];
     }
@@ -37,7 +30,7 @@ class ConfigurationTest extends TestCase
     /**
      * @dataProvider validConfigProvider
      */
-    public function testValidConfig($expected, $actual)
+    public function testValidConfig($expected, $actual): void
     {
         $config = new Configuration();
 

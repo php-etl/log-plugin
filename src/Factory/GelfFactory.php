@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kiboko\Plugin\Log\Factory;
 
@@ -53,16 +55,16 @@ final class GelfFactory implements Configurator\FactoryInterface
     {
         $builder = new Builder\Monolog\GelfBuilder();
 
-        if (array_key_exists('level', $config)) {
+        if (\array_key_exists('level', $config)) {
             $builder->withLevel($config['level']);
         }
 
-        if (array_key_exists('tcp', $config)) {
+        if (\array_key_exists('tcp', $config)) {
             $builder->withTCPTransport(
                 $config['tcp']['host'] ?? null,
                 $config['tcp']['port'] ?? null,
             );
-        } else if (array_key_exists('amqp', $config)) {
+        } elseif (\array_key_exists('amqp', $config)) {
             $builder->withAMQPTransport(
                 $config['amqp']['queue'] ?? null,
                 $config['amqp']['channel'] ?? null,

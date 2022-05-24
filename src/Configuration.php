@@ -1,17 +1,20 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kiboko\Plugin\Log;
 
 use Kiboko\Plugin\Log;
 use Symfony\Component\Config;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 final class Configuration implements Config\Definition\ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $builder = new Config\Definition\Builder\TreeBuilder('logger');
 
-        /** @phpstan-ignore-next-line */
+        /* @phpstan-ignore-next-line */
         $builder->getRootNode()
             ->children()
                 ->scalarNode('channel')->end()
@@ -24,13 +27,13 @@ final class Configuration implements Config\Definition\ConfigurationInterface
                         ->children()
                             ->scalarNode('blackhole')
                                 ->validate()
-                                    ->ifTrue(fn ($value) => $value !== null)
+                                    ->ifTrue(fn ($value) => null !== $value)
                                     ->thenInvalid('No value can be accepted in the blackhole logger, please set null.')
                                 ->end()
                             ->end()
                             ->scalarNode('stderr')
                                 ->validate()
-                                    ->ifTrue(fn ($value) => $value !== null)
+                                    ->ifTrue(fn ($value) => null !== $value)
                                     ->thenInvalid('No value can be accepted in the stderr logger, please set null.')
                                 ->end()
                             ->end()
@@ -45,7 +48,9 @@ final class Configuration implements Config\Definition\ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
+
         return $builder;
     }
 }

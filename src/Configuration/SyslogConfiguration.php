@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kiboko\Plugin\Log\Configuration;
 
@@ -8,10 +10,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class SyslogConfiguration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $builder = new TreeBuilder('syslog');
 
+        /* @phpstan-ignore-next-line */
         $builder->getRootNode()
             ->children()
                 ->scalarNode('ident')->end()
@@ -34,7 +37,8 @@ final class SyslogConfiguration implements ConfigurationInterface
                         LogLevel::EMERGENCY,
                     ])
                 ->end()
-            ->end();
+            ->end()
+        ;
 
         return $builder;
     }

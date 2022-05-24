@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kiboko\Plugin\Log\Factory;
 
@@ -53,15 +55,15 @@ final class SyslogFactory implements Configurator\FactoryInterface
     {
         $builder = new Builder\Monolog\SyslogBuilder($config['ident']);
 
-        if (array_key_exists('level', $config)) {
+        if (\array_key_exists('level', $config)) {
             $builder->withLevel($config['level']);
         }
 
-        if (array_key_exists('facility', $config)) {
+        if (\array_key_exists('facility', $config)) {
             $builder->withFacility($config['facility']);
         }
 
-        if (array_key_exists('logopts', $config)) {
+        if (\array_key_exists('logopts', $config)) {
             $builder->withLogopts($config['logopts']);
         }
 

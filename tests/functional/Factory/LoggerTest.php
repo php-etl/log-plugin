@@ -11,24 +11,52 @@ final class LoggerTest extends TestCase
     {
         yield [
             'expected' => [
-                'type' => 'stderr'
+                'destinations' => [
+                    [
+                        'elasticsearch' => [
+                            'hosts' => [
+                                'http://user:password@localhost:9200'
+                            ],
+                        ],
+                    ],
+                ]
             ],
             'expected_class' => 'Kiboko\\Plugin\\Log\\Builder\\Logger',
             'actual' => [
-                'logger' => [
-                    'type' => 'stderr'
+                [
+                    'destinations' => [
+                        [
+                            'elasticsearch' => [
+                                'hosts' => [
+                                    'http://user:password@localhost:9200'
+                                ],
+                            ],
+                        ],
+                    ],
                 ]
             ]
         ];
 
         yield [
             'expected' => [
-                'type' => 'null'
+                'destinations' => [
+                    [
+                        'stream' => [
+                            'path' => 'path/to/dev.log'
+                        ],
+                    ],
+                ],
             ],
             'expected_class' => 'Kiboko\\Plugin\\Log\\Builder\\Logger',
             'actual' => [
-                'logger' => [
-                    'type' => 'null'
+                [
+                    'destinations' => [
+                        [
+                            'stream' => [
+                                'path' => 'path/to/dev.log',
+                            ],
+                        ],
+                    ],
                 ]
             ]
         ];

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kiboko\Plugin\Log\Builder\Monolog;
 
@@ -40,7 +42,7 @@ final class GelfBuilder implements MonologBuilderInterface
         return $this;
     }
 
-    public function withAMQPTransport(string $queue, string $channel, string $vhost, string $host = null, int $port = null, float $timeout = null): self
+    public function withAMQPTransport(string $queue, string $channel, string $vhost, string $host = null, int $port = null, int $timeout = null): self
     {
         $this->transport = 'amqp';
         $this->queue = $queue;
@@ -64,14 +66,14 @@ final class GelfBuilder implements MonologBuilderInterface
     {
         $arguments = [];
 
-        if ($this->level !== null) {
+        if (null !== $this->level) {
             $arguments[] = new Node\Arg(
                 value: new Node\Scalar\String_($this->level),
                 name: new Node\Identifier('level'),
             );
         }
 
-        if ($this->level !== null) {
+        if (null !== $this->level) {
             $arguments[] = new Node\Arg(
                 value: new Node\Expr\New_(
                     class: new Node\Name\FullyQualified('Gelf\\Publisher'),
@@ -106,7 +108,7 @@ final class GelfBuilder implements MonologBuilderInterface
 
     private function buildTransport(): Node\Expr
     {
-        if ($this->transport === 'amqp') {
+        if ('amqp' === $this->transport) {
             return $this->buildAMQPTransport();
         }
 
@@ -117,14 +119,14 @@ final class GelfBuilder implements MonologBuilderInterface
     {
         $arguments = [];
 
-        if ($this->host !== null) {
+        if (null !== $this->host) {
             $arguments[] = new Node\Arg(
                 value: new Node\Scalar\String_($this->host),
                 name: new Node\Identifier('host'),
             );
         }
 
-        if ($this->port !== null) {
+        if (null !== $this->port) {
             $arguments[] = new Node\Arg(
                 value: new Node\Scalar\LNumber($this->port),
                 name: new Node\Identifier('port'),
@@ -141,28 +143,28 @@ final class GelfBuilder implements MonologBuilderInterface
     {
         $arguments = [];
 
-        if ($this->host !== null) {
+        if (null !== $this->host) {
             $arguments[] = new Node\Expr\ArrayItem(
                 value: new Node\Scalar\String_($this->host),
                 key: new Node\Scalar\String_('host'),
             );
         }
 
-        if ($this->port !== null) {
+        if (null !== $this->port) {
             $arguments[] = new Node\Expr\ArrayItem(
                 value: new Node\Scalar\LNumber($this->port),
                 key: new Node\Scalar\String_('port'),
             );
         }
 
-        if ($this->vhost !== null) {
+        if (null !== $this->vhost) {
             $arguments[] = new Node\Expr\ArrayItem(
                 value: new Node\Scalar\String_($this->vhost),
                 key: new Node\Scalar\String_('vhost'),
             );
         }
 
-        if ($this->timeout !== null) {
+        if (null !== $this->timeout) {
             $arguments[] = new Node\Expr\ArrayItem(
                 value: new Node\Scalar\LNumber($this->timeout),
                 key: new Node\Scalar\String_('read_timeout'),
@@ -197,7 +199,7 @@ final class GelfBuilder implements MonologBuilderInterface
                                                             'kind' => Node\Expr\Array_::KIND_SHORT,
                                                         ]
                                                     )
-                                                )
+                                                ),
                                             ]
                                         )
                                     ),
@@ -205,7 +207,6 @@ final class GelfBuilder implements MonologBuilderInterface
                             ),
                         ),
                     ),
-
                     new Node\Stmt\Return_(
                         new Node\Expr\New_(
                             class: new Node\Name\FullyQualified('Gelf\\Transport\\AmqpTransport'),

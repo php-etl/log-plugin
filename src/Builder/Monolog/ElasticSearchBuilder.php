@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kiboko\Plugin\Log\Builder\Monolog;
 
@@ -70,14 +72,14 @@ final class ElasticSearchBuilder implements MonologBuilderInterface
             ),
         ];
 
-        if ($this->level !== null) {
+        if (null !== $this->level) {
             $arguments[] = new Node\Arg(
                 value: new Node\Scalar\String_($this->level),
                 name: new Node\Identifier('level'),
             );
         }
 
-        if ($this->index !== null) {
+        if (null !== $this->index) {
             $arguments[] = new Node\Arg(
                 value: new Node\Expr\Array_(
                     items: [
@@ -87,7 +89,7 @@ final class ElasticSearchBuilder implements MonologBuilderInterface
                         ),
                     ],
                     attributes: [
-                        'kind' => Node\Expr\Array_::KIND_SHORT
+                        'kind' => Node\Expr\Array_::KIND_SHORT,
                     ]
                 ),
                 name: new Node\Identifier('options'),
@@ -114,7 +116,7 @@ final class ElasticSearchBuilder implements MonologBuilderInterface
 
     private function toAST($value): Node\Expr
     {
-        if (is_array($value)) {
+        if (\is_array($value)) {
             return new Node\Expr\Array_(
                 items: array_map(
                     fn ($item, $key) => new Node\Expr\ArrayItem(
@@ -125,20 +127,20 @@ final class ElasticSearchBuilder implements MonologBuilderInterface
                     array_keys($value)
                 ),
                 attributes: [
-                    'kind' => Node\Expr\Array_::KIND_SHORT
+                    'kind' => Node\Expr\Array_::KIND_SHORT,
                 ]
             );
         }
-        if (is_string($value)) {
+        if (\is_string($value)) {
             return new Node\Scalar\String_($value);
         }
-        if (is_int($value)) {
+        if (\is_int($value)) {
             return new Node\Scalar\LNumber($value);
         }
-        if (is_float($value)) {
+        if (\is_float($value)) {
             return new Node\Scalar\DNumber($value);
         }
-        if (is_null($value)) {
+        if (null === $value) {
             return new Node\Expr\ConstFetch(new Node\Name('null'));
         }
 

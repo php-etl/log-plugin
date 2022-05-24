@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kiboko\Plugin\Log\Builder\Monolog;
 
@@ -54,21 +56,21 @@ final class StreamBuilder implements MonologBuilderInterface
             ),
         ];
 
-        if ($this->level !== null) {
+        if (null !== $this->level) {
             $arguments[] = new Node\Arg(
                 value: new Node\Scalar\String_($this->level),
                 name: new Node\Identifier('level'),
             );
         }
 
-        if ($this->filePermissions !== null) {
+        if (null !== $this->filePermissions) {
             $arguments[] = new Node\Arg(
                 value: new Node\Scalar\LNumber($this->filePermissions, ['kind' => Node\Scalar\LNumber::KIND_OCT]),
                 name: new Node\Identifier('filePermission'),
             );
         }
 
-        if ($this->useLocking !== null) {
+        if (null !== $this->useLocking) {
             $arguments[] = new Node\Arg(
                 value: new Node\Expr\ConstFetch(new Node\Name($this->useLocking ? 'true' : 'false')),
                 name: new Node\Identifier('useLocking'),

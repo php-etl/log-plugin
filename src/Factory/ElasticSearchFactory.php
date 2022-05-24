@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kiboko\Plugin\Log\Factory;
 
@@ -53,15 +55,15 @@ final class ElasticSearchFactory implements Configurator\FactoryInterface
     {
         $builder = new Builder\Monolog\ElasticSearchBuilder();
 
-        if (array_key_exists('level', $config)) {
+        if (\array_key_exists('level', $config)) {
             $builder->withLevel($config['level']);
         }
 
-        if (array_key_exists('hosts', $config)) {
+        if (\array_key_exists('hosts', $config)) {
             $builder->withHosts($config['hosts']);
         }
 
-        if (array_key_exists('index', $config)) {
+        if (\array_key_exists('index', $config)) {
             $builder->withIndex($config['index']);
         }
 

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Kiboko\Plugin\Log\Builder;
 
@@ -20,7 +22,7 @@ final class Logger implements Builder
 
     public function getNode(): Node\Expr
     {
-        if ($this->logger === null) {
+        if (null === $this->logger) {
             return new Node\Expr\New_(
                 class: new Node\Name\FullyQualified('Psr\\Log\\NullLogger'),
             );
