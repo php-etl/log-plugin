@@ -42,7 +42,7 @@ final class GelfBuilder implements MonologBuilderInterface
         return $this;
     }
 
-    public function withAMQPTransport(string $queue, string $channel, string $vhost, string $host = null, int $port = null, float $timeout = null): self
+    public function withAMQPTransport(string $queue, string $channel, string $vhost, string $host = null, int $port = null, int $timeout = null): self
     {
         $this->transport = 'amqp';
         $this->queue = $queue;
@@ -207,7 +207,6 @@ final class GelfBuilder implements MonologBuilderInterface
                             ),
                         ),
                     ),
-
                     new Node\Stmt\Return_(
                         new Node\Expr\New_(
                             class: new Node\Name\FullyQualified('Gelf\\Transport\\AmqpTransport'),
