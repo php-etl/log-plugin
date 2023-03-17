@@ -1,59 +1,69 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace functional\Kiboko\Plugin\Log\Service;
 
-use Kiboko\Contract\Configurator\InvalidConfigurationException;
 use Kiboko\Plugin\Log;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
+#[\PHPUnit\Framework\Attributes\CoversNothing]
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 final class ServiceTest extends TestCase
 {
-    public function configProvider(): \Generator
+    public static function configProvider(): \Generator
     {
         yield [
             'expected' => [
                 'destinations' => [
                     [
                         'stream' => [
-                            'path' => 'path/to/dev.log'
+                            'path' => 'path/to/dev.log',
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
-            'expected_class' => 'Kiboko\\Plugin\\Log\\Builder\\Logger',
+            'expected_class' => \Kiboko\Plugin\Log\Builder\Logger::class,
             'actual' => [
                 [
                     'destinations' => [
                         [
                             'stream' => [
                                 'path' => 'path/to/dev.log',
-                            ]
-                        ]
+                            ],
+                        ],
                     ],
-                ]
+                ],
             ],
         ];
 
         yield [
             'expected' => [
                 'destinations' => [
-                   [
-                       'elasticsearch' => [
-                           'hosts' => [
-                               'http://user:password@localhost:9200'
-                           ],
-                       ],
-                   ],
+                    [
+                        'elasticsearch' => [
+                            'hosts' => [
+                                'http://user:password@localhost:9200',
+                            ],
+                        ],
+                    ],
                 ],
             ],
-            'expected_class' => 'Kiboko\\Plugin\\Log\\Builder\\Logger',
+            'expected_class' => \Kiboko\Plugin\Log\Builder\Logger::class,
             'actual' => [
                 [
                     'destinations' => [
                         [
                             'elasticsearch' => [
                                 'hosts' => [
-                                    'http://user:password@localhost:9200'
+                                    'http://user:password@localhost:9200',
                                 ],
                             ],
                         ],
@@ -63,10 +73,9 @@ final class ServiceTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider configProvider
-     */
-    public function testWithConfigurationAndProcessor(array $expected, string $expectedClass, array $actual): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('configProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function withConfigurationAndProcessor(array $expected, string $expectedClass, array $actual): void
     {
         $service = new Log\Service();
         $normalizedConfig = $service->normalize($actual);

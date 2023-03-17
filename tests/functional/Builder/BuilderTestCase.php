@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace functional\Kiboko\Plugin\Log\Builder;
 
@@ -24,7 +26,7 @@ abstract class BuilderTestCase extends TestCase
         $this->fs = null;
     }
 
-    protected function assertBuilderProducesAnInstanceOf(string $expected, DefaultBuilder $builder, string $message = '')
+    protected function assertBuilderProducesAnInstanceOf(string $expected, DefaultBuilder $builder, string $message = ''): void
     {
         static::assertThat(
             $builder,
@@ -33,7 +35,7 @@ abstract class BuilderTestCase extends TestCase
         );
     }
 
-    protected function assertBuilderNotProducesAnInstanceOf(string $expected, DefaultBuilder $builder, string $message = '')
+    protected function assertBuilderNotProducesAnInstanceOf(string $expected, DefaultBuilder $builder, string $message = ''): void
     {
         static::assertThat(
             $builder,
@@ -44,7 +46,7 @@ abstract class BuilderTestCase extends TestCase
         );
     }
 
-    protected function assertBuilderHasLogger(string $expected, DefaultBuilder $builder, string $message = '')
+    protected function assertBuilderHasLogger(string $expected, DefaultBuilder $builder, string $message = ''): void
     {
         static::assertThat(
             $builder,

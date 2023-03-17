@@ -12,7 +12,7 @@ final class SyslogRepository implements Configurator\RepositoryInterface
 {
     use RepositoryTrait;
 
-    public function __construct(private Builder\Monolog\SyslogBuilder $builder)
+    public function __construct(private readonly Builder\Monolog\SyslogBuilder $builder)
     {
         $this->files = [];
         $this->packages = [];

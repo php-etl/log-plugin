@@ -12,7 +12,7 @@ final class StreamRepository implements Configurator\RepositoryInterface
 {
     use RepositoryTrait;
 
-    public function __construct(private Builder\Monolog\StreamBuilder $builder)
+    public function __construct(private readonly Builder\Monolog\StreamBuilder $builder)
     {
         $this->files = [];
         $this->packages = [];

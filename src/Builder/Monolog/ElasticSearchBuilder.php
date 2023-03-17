@@ -8,17 +8,13 @@ use PhpParser\Node;
 
 final class ElasticSearchBuilder implements MonologBuilderInterface
 {
-    private ?string $level;
-    private ?string $index;
-    private iterable $hosts;
-    private iterable $formatters;
+    private ?string $level = null;
+    private ?string $index = null;
+    private iterable $hosts = [];
+    private iterable $formatters = [];
 
     public function __construct()
     {
-        $this->level = null;
-        $this->index = null;
-        $this->hosts = [];
-        $this->formatters = [];
     }
 
     public function withLevel(string $level): self
@@ -56,7 +52,7 @@ final class ElasticSearchBuilder implements MonologBuilderInterface
                 value: new Node\Expr\MethodCall(
                     var: new Node\Expr\MethodCall(
                         var: new Node\Expr\StaticCall(
-                            class: new Node\Name\FullyQualified('Elasticsearch\\ClientBuilder'),
+                            class: new Node\Name\FullyQualified(\Elasticsearch\ClientBuilder::class),
                             name: new Node\Identifier('create'),
                         ),
                         name: new Node\Identifier('setHosts'),

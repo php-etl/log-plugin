@@ -21,27 +21,34 @@
         }
     },
     "config": {
-        "bin-dir": "bin"
+        "bin-dir": "bin",
+        "allow-plugins": {
+            "infection/extension-installer": true
+        }
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "0.2.x-dev"
+            "dev-main": "0.3.x-dev",
+            "dev-feature/qualityflow-improvments": "0.3.x-dev"
         }
     },
     "require": {
-        "php": "^8.1",
-        "php-etl/configurator-contracts": "^0.5.0",
+        "php": "^8.2",
+        "php-etl/configurator-contracts": "^0.6@dev",
         "nikic/php-parser": "^4.9@dev",
-        "symfony/config": "^4.0 || ^5.0"
+        "symfony/config": "^5.0 || ^6.0"
     },
     "require-dev": {
-        "symfony/yaml": "^5.2",
-        "symfony/console": "^5.2",
-        "phpunit/phpunit": "^9.0",
+        "symfony/yaml": "^5.2 || ^6.0",
+        "symfony/console": "^5.2 || ^6.0",
+        "phpunit/phpunit": "^9.5 || ^10.0",
         "adlawson/vfs": "dev-develop",
         "monolog/monolog": "2.x-dev",
         "elasticsearch/elasticsearch": "~7.0",
         "graylog2/gelf-php": "^1.7",
-        "friendsofphp/php-cs-fixer": "^3.0"
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "rector/rector": "^0.15",
+        "phpstan/phpstan": "^1.10",
+        "infection/infection": "^0.26.18"
     }
 }

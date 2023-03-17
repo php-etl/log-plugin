@@ -9,13 +9,11 @@ use PhpParser\Node;
 
 final class MonologLogger implements Builder
 {
-    private iterable $handlers;
-    private iterable $processors;
+    private iterable $handlers = [];
+    private iterable $processors = [];
 
-    public function __construct(private string $channel)
+    public function __construct(private readonly string $channel)
     {
-        $this->handlers = [];
-        $this->processors = [];
     }
 
     public function withHandlers(Node\Expr ...$handlers): self
@@ -35,7 +33,7 @@ final class MonologLogger implements Builder
     public function getNode(): Node\Expr
     {
         $instance = new Node\Expr\New_(
-            class: new Node\Name\FullyQualified('Monolog\\Logger'),
+            class: new Node\Name\FullyQualified(\Monolog\Logger::class),
             args: [
                 new Node\Arg(
                     new Node\Scalar\String_($this->channel)
@@ -64,7 +62,7 @@ final class MonologLogger implements Builder
             args: [
                 new Node\Arg(
                     new Node\Expr\New_(
-                        class: new Node\Name\FullyQualified('Monolog\\Processor\\PsrLogMessageProcessor')
+                        class: new Node\Name\FullyQualified(\Monolog\Processor\PsrLogMessageProcessor::class)
                     )
                 ),
             ],
@@ -76,7 +74,7 @@ final class MonologLogger implements Builder
             args: [
                 new Node\Arg(
                     new Node\Expr\New_(
-                        class: new Node\Name\FullyQualified('Monolog\\Processor\\MemoryUsageProcessor')
+                        class: new Node\Name\FullyQualified(\Monolog\Processor\MemoryUsageProcessor::class)
                     )
                 ),
             ],

@@ -1,22 +1,18 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace functional\Kiboko\Plugin\Log\Builder;
 
 use PhpParser\Builder;
 use PhpParser\Node;
 use PhpParser\PrettyPrinter;
-use function sprintf;
 use PHPUnit\Framework\Constraint\Constraint;
-use ReflectionClass;
-use ReflectionException;
 
 final class BuilderProducesAnInstanceOf extends Constraint
 {
-    private string $className;
-
-    public function __construct(string $className)
+    public function __construct(private readonly string $className)
     {
-        $this->className = $className;
     }
 
     /**
@@ -42,7 +38,7 @@ final class BuilderProducesAnInstanceOf extends Constraint
         $printer = new PrettyPrinter\Standard();
 
         try {
-            $filename = 'vfs://' . hash('sha512', random_bytes(512)) .'.php';
+            $filename = 'vfs://'.hash('sha512', random_bytes(512)).'.php';
 
             file_put_contents($filename, $printer->prettyPrintFile([
                 new Node\Stmt\Return_($other->getNode()),
@@ -69,7 +65,7 @@ final class BuilderProducesAnInstanceOf extends Constraint
     protected function failureDescription($other): string
     {
         return sprintf(
-            'The following generated code should be an instance of %s "%s"'.PHP_EOL.'%s',
+            'The following generated code should be an instance of %s "%s"'.\PHP_EOL.'%s',
             $this->getType(),
             $this->className,
             $this->exporter()->export((new PrettyPrinter\Standard())->prettyPrint([$other->getNode()])),
@@ -79,12 +75,12 @@ final class BuilderProducesAnInstanceOf extends Constraint
     private function getType(): string
     {
         try {
-            $reflection = new ReflectionClass($this->className);
+            $reflection = new \ReflectionClass($this->className);
 
             if ($reflection->isInterface()) {
                 return 'interface';
             }
-        } catch (ReflectionException $e) {
+        } catch (\ReflectionException) {
         }
 
         return 'class';

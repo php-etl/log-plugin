@@ -12,7 +12,7 @@ final class GelfRepository implements Configurator\RepositoryInterface
 {
     use RepositoryTrait;
 
-    public function __construct(private Builder\Monolog\GelfBuilder $builder)
+    public function __construct(private readonly Builder\Monolog\GelfBuilder $builder)
     {
         $this->files = [];
         $this->packages = [];
