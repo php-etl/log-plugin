@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace functional\Kiboko\Plugin\Log;
 
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamFile;
 use PhpParser\Builder;
 use PhpParser\Node;
 use PhpParser\PrettyPrinter;
@@ -11,8 +14,11 @@ use PHPUnit\Framework\Constraint\Constraint;
 
 final class BuilderProducesAnInstanceOf extends Constraint
 {
+    public vfsStreamDirectory $fs;
+
     public function __construct(private readonly string $className)
     {
+        $this->fs = vfsStream::setup('root');
     }
 
     /**
@@ -38,13 +44,16 @@ final class BuilderProducesAnInstanceOf extends Constraint
         $printer = new PrettyPrinter\Standard();
 
         try {
-            $filename = 'vfs://'.hash('sha512', random_bytes(512)).'.php';
+            $filename = hash('sha512', random_bytes(512)).'.php';
 
-            file_put_contents($filename, $printer->prettyPrintFile([
+            $file = new vfsStreamFile($filename);
+            $file->setContent($printer->prettyPrintFile([
                 new Node\Stmt\Return_($other->getNode()),
             ]));
 
-            $instance = include $filename;
+            $this->fs->addChild($file);
+
+            $instance = include vfsStream::url('root/'.$filename);
         } catch (\Error $exception) {
             $this->fail($other, $exception->getMessage());
         }

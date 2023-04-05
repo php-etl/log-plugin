@@ -10,6 +10,7 @@
         }
     ],
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Kiboko\\Plugin\\Log\\": "src/"
@@ -28,21 +29,20 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "0.3.x-dev",
-            "dev-feature/qualityflow-improvments": "0.3.x-dev"
+            "dev-main": "0.3.x-dev"
         }
     },
     "require": {
         "php": "^8.2",
-        "php-etl/configurator-contracts": "^0.6@dev",
+        "php-etl/configurator-contracts": "^0.6",
         "nikic/php-parser": "^4.9@dev",
-        "symfony/config": "^5.0 || ^6.0"
+        "symfony/config": "^6.0"
     },
     "require-dev": {
-        "symfony/yaml": "^5.2 || ^6.0",
-        "symfony/console": "^5.2 || ^6.0",
-        "phpunit/phpunit": "^9.5 || ^10.0",
-        "adlawson/vfs": "dev-develop",
+        "symfony/yaml": "^6.0",
+        "symfony/console": "^6.0",
+        "phpunit/phpunit": "^10.0",
+        "mikey179/vfsstream": "^1.6",
         "monolog/monolog": "2.x-dev",
         "elasticsearch/elasticsearch": "~7.0",
         "graylog2/gelf-php": "^1.7",
