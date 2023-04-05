@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace functional\Kiboko\Plugin\Log\Configuration;
 
@@ -6,6 +8,15 @@ use Kiboko\Plugin\Log\Configuration;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config;
 
+/**
+ * @internal
+ */
+#[\PHPUnit\Framework\Attributes\CoversNothing]
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 class ConfigurationTest extends TestCase
 {
     private ?Config\Definition\Processor $processor = null;
@@ -15,22 +26,21 @@ class ConfigurationTest extends TestCase
         $this->processor = new Config\Definition\Processor();
     }
 
-    public function validConfigProvider(): \Generator
+    public static function validConfigProvider(): \Generator
     {
         yield [
             'expected' => [
-                'destinations' => []
+                'destinations' => [],
             ],
             'actual' => [
-                'destinations' => []
-            ]
+                'destinations' => [],
+            ],
         ];
     }
 
-    /**
-     * @dataProvider validConfigProvider
-     */
-    public function testValidConfig($expected, $actual): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('validConfigProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function validConfig(mixed $expected, mixed $actual): void
     {
         $config = new Configuration();
 
@@ -39,7 +49,7 @@ class ConfigurationTest extends TestCase
             $this->processor->processConfiguration(
                 $config,
                 [
-                    $actual
+                    $actual,
                 ]
             )
         );

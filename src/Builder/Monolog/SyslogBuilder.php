@@ -8,17 +8,13 @@ use PhpParser\Node;
 
 final class SyslogBuilder implements MonologBuilderInterface
 {
-    private ?string $level;
-    private ?int $facility;
-    private ?int $logopts;
-    private iterable $formatters;
+    private ?string $level = null;
+    private ?int $facility = null;
+    private ?int $logopts = null;
+    private iterable $formatters = [];
 
-    public function __construct(private string $ident)
+    public function __construct(private readonly string $ident)
     {
-        $this->level = null;
-        $this->facility = null;
-        $this->logopts = null;
-        $this->formatters = [];
     }
 
     public function withLevel(string $level): self
@@ -80,7 +76,7 @@ final class SyslogBuilder implements MonologBuilderInterface
         }
 
         $instance = new Node\Expr\New_(
-            class: new Node\Name\FullyQualified('Monolog\\Handler\\SyslogHandler'),
+            class: new Node\Name\FullyQualified(\Monolog\Handler\SyslogHandler::class),
             args: $arguments,
         );
 

@@ -12,7 +12,7 @@ final class ElasticSearchRepository implements Configurator\RepositoryInterface
 {
     use RepositoryTrait;
 
-    public function __construct(private Builder\Monolog\ElasticSearchBuilder $builder)
+    public function __construct(private readonly Builder\Monolog\ElasticSearchBuilder $builder)
     {
         $this->files = [];
         $this->packages = [];

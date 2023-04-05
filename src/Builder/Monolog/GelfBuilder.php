@@ -9,21 +9,17 @@ use PhpParser\Node;
 final class GelfBuilder implements MonologBuilderInterface
 {
     private string $transport = 'tcp';
-    private ?string $level;
-    private ?string $vhost;
-    private ?string $host;
-    private ?int $port;
-    private ?int $timeout;
-    private ?string $queue;
-    private ?string $channel;
-    private iterable $formatters;
+    private ?string $level = null;
+    private ?string $vhost = null;
+    private ?string $host = null;
+    private ?int $port = null;
+    private ?int $timeout = null;
+    private ?string $queue = null;
+    private ?string $channel = null;
+    private iterable $formatters = [];
 
     public function __construct()
     {
-        $this->level = null;
-        $this->host = null;
-        $this->port = null;
-        $this->formatters = [];
     }
 
     public function withLevel(string $level): self
@@ -76,7 +72,7 @@ final class GelfBuilder implements MonologBuilderInterface
         if (null !== $this->level) {
             $arguments[] = new Node\Arg(
                 value: new Node\Expr\New_(
-                    class: new Node\Name\FullyQualified('Gelf\\Publisher'),
+                    class: new Node\Name\FullyQualified(\Gelf\Publisher::class),
                     args: [
                         new Node\Arg(
                             value: $this->buildTransport(),
@@ -89,7 +85,7 @@ final class GelfBuilder implements MonologBuilderInterface
         }
 
         $instance = new Node\Expr\New_(
-            class: new Node\Name\FullyQualified('Monolog\\Handler\\GelfHandler'),
+            class: new Node\Name\FullyQualified(\Monolog\Handler\GelfHandler::class),
             args: $arguments,
         );
 
@@ -134,7 +130,7 @@ final class GelfBuilder implements MonologBuilderInterface
         }
 
         return new Node\Expr\New_(
-            class: new Node\Name\FullyQualified('Gelf\\Transport\\TcpTransport'),
+            class: new Node\Name\FullyQualified(\Gelf\Transport\TcpTransport::class),
             args: $arguments,
         );
     }
@@ -209,7 +205,7 @@ final class GelfBuilder implements MonologBuilderInterface
                     ),
                     new Node\Stmt\Return_(
                         new Node\Expr\New_(
-                            class: new Node\Name\FullyQualified('Gelf\\Transport\\AmqpTransport'),
+                            class: new Node\Name\FullyQualified(\Gelf\Transport\AmqpTransport::class),
                             args: [
                                 new Node\Arg(
                                     value: new Node\Expr\New_(

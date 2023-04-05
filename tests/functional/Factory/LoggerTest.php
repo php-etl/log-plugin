@@ -1,13 +1,24 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace functional\Factory;
 
 use Kiboko\Plugin\Log;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
+#[\PHPUnit\Framework\Attributes\CoversNothing]
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 final class LoggerTest extends TestCase
 {
-    public function configProvider()
+    public static function configProvider()
     {
         yield [
             'expected' => [
@@ -15,26 +26,26 @@ final class LoggerTest extends TestCase
                     [
                         'elasticsearch' => [
                             'hosts' => [
-                                'http://user:password@localhost:9200'
+                                'http://user:password@localhost:9200',
                             ],
                         ],
                     ],
-                ]
+                ],
             ],
-            'expected_class' => 'Kiboko\\Plugin\\Log\\Builder\\Logger',
+            'expected_class' => \Kiboko\Plugin\Log\Builder\Logger::class,
             'actual' => [
                 [
                     'destinations' => [
                         [
                             'elasticsearch' => [
                                 'hosts' => [
-                                    'http://user:password@localhost:9200'
+                                    'http://user:password@localhost:9200',
                                 ],
                             ],
                         ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
 
         yield [
@@ -42,12 +53,12 @@ final class LoggerTest extends TestCase
                 'destinations' => [
                     [
                         'stream' => [
-                            'path' => 'path/to/dev.log'
+                            'path' => 'path/to/dev.log',
                         ],
                     ],
                 ],
             ],
-            'expected_class' => 'Kiboko\\Plugin\\Log\\Builder\\Logger',
+            'expected_class' => \Kiboko\Plugin\Log\Builder\Logger::class,
             'actual' => [
                 [
                     'destinations' => [
@@ -57,15 +68,14 @@ final class LoggerTest extends TestCase
                             ],
                         ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
-    /**
-     * @dataProvider configProvider
-     */
-    public function testWithConfiguration(array $expected, string $expectedClass, array $actual): void
+    #[\PHPUnit\Framework\Attributes\DataProvider('configProvider')]
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function withConfiguration(array $expected, string $expectedClass, array $actual): void
     {
         $factory = new Log\Service();
         $normalizedConfig = $factory->normalize($actual);
@@ -90,11 +100,12 @@ final class LoggerTest extends TestCase
         );
     }
 
-    public function testFailToValidate(): void
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function failToValidate(): void
     {
         $factory = new Log\Service();
         $this->assertFalse($factory->validate([
-            'type' => 'unexpected'
+            'type' => 'unexpected',
         ]));
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace functional\Kiboko\Plugin\Log;
 
@@ -6,15 +8,11 @@ use PhpParser\Builder;
 use PhpParser\Node;
 use PhpParser\PrettyPrinter;
 use PHPUnit\Framework\Constraint\Constraint;
-use function sprintf;
 
 final class BuilderHasLogger extends Constraint
 {
-    private string $className;
-
-    public function __construct(string $className)
+    public function __construct(private readonly string $className)
     {
-        $this->className = $className;
     }
 
     public function toString(): string
@@ -34,7 +32,7 @@ final class BuilderHasLogger extends Constraint
         $printer = new PrettyPrinter\Standard();
 
         try {
-            $filename = 'vfs://' . hash('sha512', random_bytes(512)) .'.php';
+            $filename = 'vfs://'.hash('sha512', random_bytes(512)).'.php';
 
             file_put_contents($filename, $printer->prettyPrintFile([
                 new Node\Stmt\Return_($other->getNode()),
