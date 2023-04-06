@@ -8,15 +8,6 @@ use Kiboko\Plugin\Log\Configuration;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config;
 
-/**
- * @internal
- */
-#[\PHPUnit\Framework\Attributes\CoversNothing]
-/**
- * @internal
- *
- * @coversNothing
- */
 class ConfigurationTest extends TestCase
 {
     private ?Config\Definition\Processor $processor = null;
@@ -39,8 +30,7 @@ class ConfigurationTest extends TestCase
     }
 
     #[\PHPUnit\Framework\Attributes\DataProvider('validConfigProvider')]
-    #[\PHPUnit\Framework\Attributes\Test]
-    public function validConfig(mixed $expected, mixed $actual): void
+    public function testValidConfig($expected, $actual): void
     {
         $config = new Configuration();
 

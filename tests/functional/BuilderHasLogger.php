@@ -45,4 +45,18 @@ final class BuilderHasLogger extends Constraint
 
         return $instance->getLogger() instanceof $this->className;
     }
+
+    private function getType(): string
+    {
+        try {
+            $reflection = new \ReflectionClass($this->className);
+
+            if ($reflection->isInterface()) {
+                return 'interface';
+            }
+        } catch (\ReflectionException) {
+        }
+
+        return 'class';
+    }
 }

@@ -6,19 +6,9 @@ namespace functional\Kiboko\Plugin\Log\Builder;
 
 use Kiboko\Plugin\Log\Builder;
 
-/**
- * @internal
- */
-#[\PHPUnit\Framework\Attributes\CoversNothing]
-/**
- * @internal
- *
- * @coversNothing
- */
 final class NullLoggerTest extends BuilderTestCase
 {
-    #[\PHPUnit\Framework\Attributes\Test]
-    public function nullLogger(): void
+    public function testNullLogger(): void
     {
         $log = new Builder\NullLogger();
 
