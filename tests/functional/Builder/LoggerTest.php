@@ -5,44 +5,34 @@ declare(strict_types=1);
 namespace functional\Kiboko\Plugin\Log\Builder;
 
 use Kiboko\Plugin\Log\Builder;
+use Psr\Log\AbstractLogger;
+use Psr\Log\NullLogger;
 
-/**
- * @internal
- */
-#[\PHPUnit\Framework\Attributes\CoversNothing]
-/**
- * @internal
- *
- * @coversNothing
- */
 final class LoggerTest extends BuilderTestCase
 {
-    #[\PHPUnit\Framework\Attributes\Test]
-    public function withStderrLogger(): void
+    public function testWithStderrLogger(): void
     {
         $log = new Builder\Logger(
             (new Builder\StderrLogger())->getNode()
         );
 
         $this->assertBuilderProducesAnInstanceOf(
-            \Psr\Log\AbstractLogger::class,
+            AbstractLogger::class,
             $log
         );
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    public function withoutSpecifiedLogger(): void
+    public function testWithoutSpecifiedLogger(): void
     {
         $log = new Builder\Logger();
 
         $this->assertBuilderProducesAnInstanceOf(
-            \Psr\Log\NullLogger::class,
+            NullLogger::class,
             $log
         );
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    public function addingStderrLogger(): void
+    public function testAddingStderrLogger(): void
     {
         $log = new Builder\Logger();
 
@@ -51,7 +41,7 @@ final class LoggerTest extends BuilderTestCase
         );
 
         $this->assertBuilderProducesAnInstanceOf(
-            \Psr\Log\AbstractLogger::class,
+            AbstractLogger::class,
             $log
         );
     }

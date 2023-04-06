@@ -7,15 +7,6 @@ namespace functional\Factory;
 use Kiboko\Plugin\Log;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- */
-#[\PHPUnit\Framework\Attributes\CoversNothing]
-/**
- * @internal
- *
- * @coversNothing
- */
 final class LoggerTest extends TestCase
 {
     public static function configProvider()
@@ -74,8 +65,7 @@ final class LoggerTest extends TestCase
     }
 
     #[\PHPUnit\Framework\Attributes\DataProvider('configProvider')]
-    #[\PHPUnit\Framework\Attributes\Test]
-    public function withConfiguration(array $expected, string $expectedClass, array $actual): void
+    public function testWithConfiguration(array $expected, string $expectedClass, array $actual): void
     {
         $factory = new Log\Service();
         $normalizedConfig = $factory->normalize($actual);
@@ -100,8 +90,7 @@ final class LoggerTest extends TestCase
         );
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    public function failToValidate(): void
+    public function testFailToValidate(): void
     {
         $factory = new Log\Service();
         $this->assertFalse($factory->validate([

@@ -6,19 +6,9 @@ namespace functional\Kiboko\Plugin\Log\Builder;
 
 use Kiboko\Plugin\Log\Builder;
 
-/**
- * @internal
- */
-#[\PHPUnit\Framework\Attributes\CoversNothing]
-/**
- * @internal
- *
- * @coversNothing
- */
 final class StderrLoggerTest extends BuilderTestCase
 {
-    #[\PHPUnit\Framework\Attributes\Test]
-    public function stderrLogger(): void
+    public function testStderrLogger(): void
     {
         $log = new Builder\StderrLogger();
 

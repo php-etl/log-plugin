@@ -7,15 +7,6 @@ namespace functional\Kiboko\Plugin\Log\Service;
 use Kiboko\Plugin\Log;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- */
-#[\PHPUnit\Framework\Attributes\CoversNothing]
-/**
- * @internal
- *
- * @coversNothing
- */
 final class ServiceTest extends TestCase
 {
     public static function configProvider(): \Generator
@@ -74,8 +65,7 @@ final class ServiceTest extends TestCase
     }
 
     #[\PHPUnit\Framework\Attributes\DataProvider('configProvider')]
-    #[\PHPUnit\Framework\Attributes\Test]
-    public function withConfigurationAndProcessor(array $expected, string $expectedClass, array $actual): void
+    public function testWithConfigurationAndProcessor(array $expected, string $expectedClass, array $actual): void
     {
         $service = new Log\Service();
         $normalizedConfig = $service->normalize($actual);
