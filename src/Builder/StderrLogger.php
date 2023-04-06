@@ -27,6 +27,12 @@ final class StderrLogger implements Builder
                                     ),
                                     new Node\Param(
                                         var: new Node\Expr\Variable(name: 'message'),
+                                        type: new Node\UnionType(
+                                            types: [
+                                                new Node\Name(name: 'string'),
+                                                new Node\Name\FullyQualified(name: 'Stringable'),
+                                            ],
+                                        ),
                                     ),
                                     new Node\Param(
                                         var: new Node\Expr\Variable(name: 'context'),
@@ -38,6 +44,7 @@ final class StderrLogger implements Builder
                                         type: new Node\Name(name: 'array'),
                                     ),
                                 ],
+                                'returnType' => new Node\Name(name: 'void'),
                                 'stmts' => [
                                     new Node\Stmt\Expression(
                                         new Node\Expr\FuncCall(
