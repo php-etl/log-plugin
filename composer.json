@@ -35,7 +35,7 @@
     "require": {
         "php": "^8.4",
         "php-etl/configurator-contracts": "0.8.*",
-        "nikic/php-parser": "^4.15",
+        "nikic/php-parser": "^5.6",
         "symfony/config": "^6.0"
     },
     "require-dev": {
